@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../theme/app_colors.dart';
 import '../utils/constants.dart';
 import '../widgets/components.dart';
+import 'dart:ui';
 import '../widgets/linkedin_embed.dart';
 
 class PortfolioHome extends StatefulWidget {
@@ -21,6 +22,7 @@ class _PortfolioHomeState extends State<PortfolioHome> {
   final GlobalKey _skillsKey = GlobalKey();
   final GlobalKey _experienceKey = GlobalKey();
   final GlobalKey _projectsKey = GlobalKey();
+  final GlobalKey _architectureKey = GlobalKey();
   final GlobalKey _contactKey = GlobalKey();
 
   void _scrollTo(GlobalKey key) {
@@ -39,98 +41,100 @@ class _PortfolioHomeState extends State<PortfolioHome> {
     final isDesktop = screenWidth > 800;
 
     return Scaffold(
-      body: Stack(
-        children: [
-          // Background glows
-          Positioned(
-            top: -200,
-            left: -200,
-            child: Container(
-              width: 500,
-              height: 500,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.primary.withOpacity(0.05),
-                boxShadow: [
-                  BoxShadow(color: AppColors.primary.withOpacity(0.1), blurRadius: 200, spreadRadius: 100),
-                ],
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF0A192F), // Navy
+              Color(0xFF030A16), // Deep Black-Navy
+              Color(0xFF000000), // Black
+            ],
+            stops: [0.0, 0.5, 1.0],
+          ),
+        ),
+        child: Stack(
+          children: [
+            // Background glows
+            Positioned(
+              top: -200,
+              left: -200,
+              child: Container(
+                width: 500,
+                height: 500,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.primary.withOpacity(0.03),
+                  boxShadow: [
+                    BoxShadow(color: AppColors.primary.withOpacity(0.08), blurRadius: 200, spreadRadius: 100),
+                  ],
+                ),
               ),
             ),
-          ),
-          Positioned(
-            bottom: -300,
-            right: -200,
-            child: Container(
-              width: 600,
-              height: 600,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.accent.withOpacity(0.05),
-                boxShadow: [
-                  BoxShadow(color: AppColors.accent.withOpacity(0.1), blurRadius: 200, spreadRadius: 100),
-                ],
-              ),
-            ),
-          ),
-          
-          Scrollbar(
-            controller: _scrollController,
-            thumbVisibility: true,
-            child: SingleChildScrollView(
+            
+            Scrollbar(
               controller: _scrollController,
-              child: Column(
-                children: [
-                  _NavBar(
-                    isDesktop: isDesktop,
-                    onNavigate: (section) {
-                      switch (section) {
-                        case 'Home': _scrollTo(_homeKey); break;
-                        case 'About': _scrollTo(_aboutKey); break;
-                        case 'Arsenal': _scrollTo(_skillsKey); break;
-                        case 'Experience': _scrollTo(_experienceKey); break;
-                        case 'Projects': _scrollTo(_projectsKey); break;
-                        case 'Contact': _scrollTo(_contactKey); break;
-                      }
-                    },
-                  ),
-                  Center(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 1000),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: isDesktop ? 64.0 : 24.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 100),
-                            _HeroSection(key: _homeKey),
-                            const SizedBox(height: 150),
-                            _AboutSection(key: _aboutKey),
-                            const SizedBox(height: 150),
-                            _SkillsSection(key: _skillsKey),
-                            const SizedBox(height: 150),
-                            _ExperienceSection(key: _experienceKey),
-                            const SizedBox(height: 150),
-                            _ProjectsSection(key: _projectsKey),
-                            const SizedBox(height: 150),
-                            const _EducationSection(),
-                            const SizedBox(height: 150),
-                            const _CertificationsAwardsSection(),
-                            const SizedBox(height: 150),
-                            const _CareerGuidanceSection(),
-                            const SizedBox(height: 150),
-                            _ContactSection(key: _contactKey),
-                            const SizedBox(height: 100),
-                            _Footer(),
-                          ],
+              thumbVisibility: true,
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                child: Column(
+                  children: [
+                    _NavBar(
+                      isDesktop: isDesktop,
+                      onNavigate: (section) {
+                        switch (section) {
+                          case 'Home': _scrollTo(_homeKey); break;
+                          case 'About': _scrollTo(_aboutKey); break;
+                          case 'Skills': _scrollTo(_skillsKey); break;
+                          case 'Experience': _scrollTo(_experienceKey); break;
+                          case 'Projects': _scrollTo(_projectsKey); break;
+                          case 'Architecture': _scrollTo(_architectureKey); break;
+                          case 'Contact': _scrollTo(_contactKey); break;
+                        }
+                      },
+                    ),
+                    Center(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 1000),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: isDesktop ? 64.0 : 24.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 100),
+                              _HeroSection(key: _homeKey),
+                              const SizedBox(height: 150),
+                              _AboutSection(key: _aboutKey),
+                              const SizedBox(height: 150),
+                              _SkillsSection(key: _skillsKey),
+                              const SizedBox(height: 150),
+                              _ExperienceSection(key: _experienceKey),
+                              const SizedBox(height: 150),
+                              _ProjectsSection(key: _projectsKey),
+                              const SizedBox(height: 150),
+                              _ArchitectureSection(key: _architectureKey),
+                              const SizedBox(height: 150),
+                              const _EducationSection(),
+                              const SizedBox(height: 150),
+                              const _CertificationsAwardsSection(),
+                              const SizedBox(height: 150),
+                              const _CareerGuidanceSection(),
+                              const SizedBox(height: 150),
+                              _ContactSection(key: _contactKey),
+                              const SizedBox(height: 100),
+                              _Footer(),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -144,10 +148,10 @@ class _NavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const items = ['Home', 'About', 'Arsenal', 'Experience', 'Projects', 'Contact'];
+    const items = ['Home', 'About', 'Skills', 'Projects', 'Experience', 'Architecture', 'Contact'];
     return Container(
       padding: EdgeInsets.symmetric(horizontal: isDesktop ? 64.0 : 24.0, vertical: 24),
-      color: AppColors.background.withOpacity(0.9),
+      color: Colors.transparent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -162,27 +166,39 @@ class _NavBar extends StatelessWidget {
           ).animate().fadeIn().slideX(),
           if (isDesktop)
             Row(
-              children: items.map((item) {
-                return Padding(
-                  padding: const EdgeInsets.only(left: 32),
-                  child: InkWell(
-                    onTap: () => onNavigate(item),
-                    child: Text(
-                      item,
-                      style: const TextStyle(
-                        color: AppColors.textMain,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ).animate(onPlay: (controller) => controller.repeat(reverse: true)).shimmer(delay: 2000.ms, duration: 2000.ms, color: AppColors.primary.withOpacity(0.2)),
+              children: [
+                ...items.map((item) {
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 32),
+                    child: InkWell(
+                      onTap: () => onNavigate(item),
+                      child: Text(
+                        item,
+                        style: const TextStyle(
+                          color: AppColors.textMain,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                        ),
+                      ).animate(onPlay: (controller) => controller.repeat(reverse: true)).shimmer(delay: 2000.ms, duration: 2000.ms, color: AppColors.primary.withOpacity(0.2)),
+                    ),
+                  );
+                }).toList(),
+                const SizedBox(width: 32),
+                OutlinedButton(
+                  onPressed: () {},
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.primary,
+                    side: const BorderSide(color: AppColors.primary),
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                   ),
-                );
-              }).toList(),
+                  child: const Text("Resume"),
+                ).animate().fadeIn(delay: 400.ms),
+              ],
             ).animate().fadeIn(delay: 300.ms),
           if (!isDesktop)
             IconButton(
               icon: const Icon(Icons.menu, color: AppColors.primary),
               onPressed: () {
-                // Bottom sheet or drawer for mobile menu
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Menu Coming Soon')));
               },
             )
@@ -375,29 +391,17 @@ class _ExperienceSection extends StatelessWidget {
                           style: const TextStyle(color: AppColors.primaryVariant, fontWeight: FontWeight.w500),
                         ),
                         const SizedBox(height: 16),
-                        ...((exp['projects'] as List).map((project) {
-                           return Padding(
-                             padding: const EdgeInsets.only(bottom: 16),
-                             child: Column(
-                               crossAxisAlignment: CrossAxisAlignment.start,
-                               children: [
-                                 Text(project['name'], style: const TextStyle(color: AppColors.textMain, fontWeight: FontWeight.bold)),
-                                 const SizedBox(height: 8),
-                                 ...((project['points'] as List).map((point) {
-                                   return Padding(
-                                     padding: const EdgeInsets.only(bottom: 8),
-                                     child: Row(
-                                       crossAxisAlignment: CrossAxisAlignment.start,
-                                       children: [
-                                         const Text("▹ ", style: TextStyle(color: AppColors.primary)),
-                                         Expanded(child: Text(point, style: Theme.of(context).textTheme.bodyMedium)),
-                                       ],
-                                     ),
-                                   );
-                                 }).toList())
-                               ],
-                             ),
-                           );
+                        ...((exp['points'] as List).map((point) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text("▹ ", style: TextStyle(color: AppColors.primary)),
+                                Expanded(child: Text(point, style: Theme.of(context).textTheme.bodyMedium)),
+                              ],
+                            ),
+                          );
                         }).toList())
                       ],
                     ),
@@ -420,32 +424,40 @@ class _ProjectsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionHeading(title: "Featured Projects", subtitle: "Some things I've built.")
+        const SectionHeading(title: "Featured Engineering", subtitle: "Scalable systems I've built.")
             .animate().fadeIn(duration: 600.ms).slideX(begin: -0.1),
-        // Just a showcase of main app projects
         Wrap(
           spacing: 24,
           runSpacing: 24,
-          children: [
-            _buildProjectCard("Kicksnap", "Global AI-driven E-commerce application localized for 8 languages across USA, Japan, and China.", ["Flutter", "Line SDK", "WeChat SDK", "AR/AI", "AppsFlyer"]),
-            _buildProjectCard("Jewello", "B2C Jewellery Saving Scheme Platform supporting a customizable Flavor architecture for 30+ brands.", ["Spring Boot", "Flutter", "Clean Architecture", "Fastlane", "Payment Gateways"]),
-            _buildProjectCard("Cascada", "IoT Smart Waterer for Equine Health utilizing deep native app links and reliable tracking.", ["Flutter", "Native App Links", "IoT"]),
-            _buildProjectCard("Acme Padm POS", "Engineered POS system integrated with POS hardware and swipe machines for seamless backend settlement.", ["Flutter", "Hardware Integration", "Java", "Worldline"]),
-          ].map((w) => w.animate().fadeIn(delay: 200.ms).scale(begin: const Offset(0.95, 0.95))).toList(),
+          children: AppConstants.projects.map((proj) {
+            return _buildProjectCard(
+              proj['name'],
+              proj['metric'],
+              proj['problem'],
+              proj['solution'],
+              proj['impact'],
+              List<String>.from(proj['tech']),
+            ).animate().fadeIn(delay: 200.ms).scale(begin: const Offset(0.95, 0.95));
+          }).toList(),
         )
       ],
     );
   }
   
-  Widget _buildProjectCard(String title, String desc, List<String> tech) {
-    return Container(
-      width: 400,
-      padding: const EdgeInsets.all(32),
-      decoration: BoxDecoration(
-        color: AppColors.backgroundLight,
-        borderRadius: BorderRadius.circular(16),
+  Widget _buildProjectCard(String title, String metric, String problem, String solution, String impact, List<String> tech) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          width: 450,
+          padding: const EdgeInsets.all(32),
+          decoration: BoxDecoration(
+            color: AppColors.backgroundLight.withOpacity(0.7),
+            borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.border.withOpacity(0.5)),
         boxShadow: [
-           BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 10, offset: const Offset(0, 10)),
+           BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 15, offset: const Offset(0, 10)),
         ],
       ),
       child: Column(
@@ -454,20 +466,26 @@ class _ProjectsSection extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const FaIcon(FontAwesomeIcons.folderOpen, color: AppColors.primary, size: 40),
-              Row(
-                children: const [
-                  FaIcon(FontAwesomeIcons.github, color: AppColors.textSecondary, size: 20),
-                  SizedBox(width: 16),
-                  FaIcon(FontAwesomeIcons.arrowUpRightFromSquare, color: AppColors.textSecondary, size: 18),
-                ],
+              const FaIcon(FontAwesomeIcons.server, color: AppColors.primary, size: 36),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: AppColors.primary.withOpacity(0.5)),
+                ),
+                child: Text(metric, style: const TextStyle(color: AppColors.primary, fontSize: 12, fontWeight: FontWeight.bold)),
               )
             ],
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: 24),
           Text(title, style: const TextStyle(color: AppColors.textMain, fontSize: 22, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 16),
-          Text(desc, style: const TextStyle(color: AppColors.textSecondary, height: 1.5)),
+          const SizedBox(height: 24),
+          _buildImpactRow(Icons.warning_amber_rounded, "Problem", problem),
+          const SizedBox(height: 12),
+          _buildImpactRow(Icons.lightbulb_outline, "Solution", solution),
+          const SizedBox(height: 12),
+          _buildImpactRow(Icons.trending_up, "Impact", impact),
           const SizedBox(height: 32),
           Wrap(
             spacing: 12,
@@ -476,6 +494,191 @@ class _ProjectsSection extends StatelessWidget {
           )
         ],
       ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImpactRow(IconData icon, String label, String text) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, size: 16, color: AppColors.textSecondary),
+        const SizedBox(width: 8),
+        Expanded(
+          child: RichText(
+            text: TextSpan(
+              style: const TextStyle(color: AppColors.textSecondary, fontSize: 14, height: 1.5),
+              children: [
+                TextSpan(text: "$label: ", style: const TextStyle(color: AppColors.textMain, fontWeight: FontWeight.bold)),
+                TextSpan(text: text),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ArchitectureSection extends StatelessWidget {
+  const _ArchitectureSection({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionHeading(title: "Architecture & DevOps", subtitle: "System Design and CI/CD Pipeline flow.")
+            .animate().fadeIn(duration: 600.ms).slideX(begin: -0.1),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(48),
+              decoration: BoxDecoration(
+                color: AppColors.backgroundLight.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.border.withOpacity(0.5)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 20,
+                spreadRadius: 5,
+              )
+            ],
+          ),
+          child: Column(
+            children: [
+              Text(
+                "Automated Deployment Pipeline (CI/CD)",
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: AppColors.textMain),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                "A highly automated CI/CD flow engineered using GitLab CI and Jenkins, drastically reducing deployment time and ensuring zero-downtime rollouts.",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: AppColors.textSecondary, height: 1.5, fontSize: 16),
+              ),
+              const SizedBox(height: 48),
+              Wrap(
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 24,
+                runSpacing: 24,
+                children: [
+                  _buildArchNode(Icons.code, "Code Commit\n(GitLab)"),
+                  _buildArchArrow(),
+                  _buildArchNode(Icons.science_outlined, "Automated Test\n(JUnit / Flutter)"),
+                  _buildArchArrow(),
+                  _buildArchNode(Icons.build_circle_outlined, "Build Artifact\n(WAR / APK)"),
+                  _buildArchArrow(),
+                  _buildArchNode(Icons.layers_outlined, "Dockerization\n(Containerization)"),
+                  _buildArchArrow(),
+                  _buildArchNode(Icons.cloud_upload_outlined, "Auto Deploy\n(AWS / FTP)"),
+                ],
+              ),
+              const SizedBox(height: 64),
+              const Divider(color: AppColors.border),
+              const SizedBox(height: 64),
+              Text(
+                "Multi-Tenant Backend Architecture",
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: AppColors.textMain),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                "Spring Boot microservices architecture designed to scale efficiently across 30+ B2C clients, providing isolated data silos and secure routing.",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: AppColors.textSecondary, height: 1.5, fontSize: 16),
+              ),
+              const SizedBox(height: 48),
+              Wrap(
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 24,
+                runSpacing: 24,
+                children: [
+                  _buildArchNode(Icons.devices, "Client Apps\n(Flutter)"),
+                  _buildArchArrow(),
+                  _buildArchNode(Icons.router, "API Gateway\n(Spring Cloud)"),
+                  _buildArchArrow(),
+                  _buildArchNode(Icons.dns, "Tenant Resolver\n(Dynamic DB Config)"),
+                  _buildArchArrow(),
+                  _buildArchNode(Icons.memory, "Microservices\n(Spring Boot)"),
+                  _buildArchArrow(),
+                  _buildArchNode(Icons.storage, "Isolated DBs\n(MySQL)"),
+                ],
+              ),
+              const SizedBox(height: 64),
+              const Divider(color: AppColors.border),
+              const SizedBox(height: 64),
+              Text(
+                "Global Authentication Flow",
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: AppColors.textMain),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                "Bypassing regional telecom boundaries through comprehensive LINE & WeChat SDK integrations backed by OAuth 2.0 token generation.",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: AppColors.textSecondary, height: 1.5, fontSize: 16),
+              ),
+              const SizedBox(height: 48),
+              Wrap(
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 24,
+                runSpacing: 24,
+                children: [
+                  _buildArchNode(Icons.app_shortcut, "Auth Request\n(Flutter UI)"),
+                  _buildArchArrow(),
+                  _buildArchNode(Icons.public, "Social SDK\n(LINE / WeChat)"),
+                  _buildArchArrow(),
+                  _buildArchNode(Icons.security, "Auth Verification\n(Spring Security)"),
+                  _buildArchArrow(),
+                  _buildArchNode(Icons.vpn_key, "JWT Generation\n(Secure Token)"),
+                  _buildArchArrow(),
+                  _buildArchNode(Icons.verified_user, "Session Active\n(User Logged In)"),
+                ],
+              ),
+            ],
+          ),
+            ),
+          ),
+        ).animate().fadeIn(delay: 200.ms).scale(begin: const Offset(0.95, 0.95)),
+      ],
+    );
+  }
+
+  Widget _buildArchNode(IconData icon, String label) {
+    return SizedBox(
+      width: 140,
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: AppColors.backgroundLight,
+              shape: BoxShape.circle,
+              border: Border.all(color: AppColors.primary.withOpacity(0.5)),
+              boxShadow: [
+                BoxShadow(color: AppColors.primary.withOpacity(0.1), blurRadius: 10, spreadRadius: 2),
+              ],
+            ),
+            child: Icon(icon, color: AppColors.primary, size: 36),
+          ),
+          const SizedBox(height: 16),
+          Text(label, textAlign: TextAlign.center, style: const TextStyle(color: AppColors.textMain, fontSize: 14, fontWeight: FontWeight.w600)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildArchArrow() {
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 8),
+      child: Icon(Icons.arrow_forward_rounded, color: AppColors.primaryVariant, size: 32),
     );
   }
 }
@@ -556,11 +759,31 @@ class _CertificationsAwardsSection extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  FaIcon(
-                    isAward ? FontAwesomeIcons.trophy : FontAwesomeIcons.certificate,
-                    color: isAward ? Colors.amber : AppColors.primary,
-                    size: 32,
-                  ),
+                  if (cert.containsKey('logoUrl') && cert['logoUrl'] != null)
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        color: Colors.white, // In case of dark mode, keep logo readable if transparent
+                        child: Image.network(
+                          cert['logoUrl']!,
+                          width: 40,
+                          height: 40,
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) => FaIcon(
+                            isAward ? FontAwesomeIcons.trophy : FontAwesomeIcons.certificate,
+                            color: isAward ? Colors.amber : AppColors.primary,
+                            size: 32,
+                          ),
+                        ),
+                      ),
+                    )
+                  else
+                    FaIcon(
+                      isAward ? FontAwesomeIcons.trophy : FontAwesomeIcons.certificate,
+                      color: isAward ? Colors.amber : AppColors.primary,
+                      size: 32,
+                    ),
                   const SizedBox(width: 24),
                   Expanded(
                     child: Column(

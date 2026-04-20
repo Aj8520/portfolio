@@ -1,46 +1,81 @@
 class AppConstants {
   static const String name = "Ajay Jadhav";
-  static const String role = "Software Engineer (Flutter & Java/Spring Boot)";
-  static const String shortRole = "Flutter & Spring Boot Engineer";
+  static const String role = "Software Engineer (Flutter & Spring Boot)";
+  static const String shortRole = "Software Engineer";
   static const String email = "ajayjadhav852000@gmail.com";
-  static const String location = "Pune, Maharashtra, India";
+  static const String location = "Pune, India";
   static const String phone = "+91 91750 80872";
   static const String linkedinUrl = "https://linkedin.com/in/ajayaniljadhav";
   
-  static const String heroDescription = "High-impact Software Engineer with nearly 4 years of experience specializing in scalable backend systems and cross-platform mobile applications. Building the future with Flutter and Java.";
+  static const String heroDescription = "Software Engineer specializing in building scalable systems. Bridging the gap between high-performance backends, seamless mobile experiences, and resilient deployment pipelines.";
   
-  static const String aboutMe = "I am a high-impact Software Engineer with a proven track record of architecting multi-tenant B2C platforms and global product integrations. Combining deep expertise in Java, Spring Boot, and Flutter alongside an AWS Developer certification, I focus on CI/CD automation, IoT connectivity, and overcoming complex regional deployment requirements.";
+  static const String aboutMe = "I engineer complete product ecosystems. Over the past ~4 years, my focus has been on architecting robust backend infrastructures, delivering high-performance cross-platform mobile functionality, and ensuring deployment reliability through advanced DevOps structures. My technical contributions span across establishing multi-tenant architectures scaling to 30+ B2B clients and integrating mission-critical regional authentication frameworks for extensive international markets (USA, Japan, China). I specialize in diagnosing and solving complex architectural bottlenecks at scale—combining robust Java Spring Boot microservices, resilient Flutter frontends, and automated GitLab/Jenkins pipelines to deliver platforms ready for global operation.";
   
   static const List<Map<String, dynamic>> skills = [
-    {"category": "Frontend & Mobile", "items": ["Flutter", "Dart", "Bloc", "GetX", "Clean Architecture", "AR Core/AR Kit"]},
-    {"category": "Backend", "items": ["Java (8/11/17)", "Spring Boot", "Spring Cloud", "Microservices", "RESTful APIs", "SQL"]},
-    {"category": "Cloud & DevOps", "items": ["AWS (EC2/S3/Lambda)", "Kubernetes Context", "Docker", "GitLab CI/CD", "Fastlane"]},
-    {"category": "Integrations", "items": ["WeChat SDK", "Line SDK", "Firebase", "Payment Gateways (Cashfree, BillDesk)", "OAuth 2.0"]},
+    {"category": "Mobile Engineering", "items": ["Flutter (Advanced)", "Bloc", "GetX", "Clean Architecture"]},
+    {"category": "Backend & Architecture", "items": ["Java", "Spring Boot", "Microservices"]},
+    {"category": "Cloud & DevOps", "items": ["AWS (EC2, S3, Lambda)", "Docker", "Kubernetes", "Jenkins", "GitLab CI/CD"]},
+    {"category": "Integrations", "items": ["WeChat SDK", "Line SDK", "Payment Gateways", "Firebase", "OAuth 2.0"]},
   ];
   
+  static const List<Map<String, dynamic>> projects = [
+    {
+      "name": "Kicksnap (AI E-commerce Platform)",
+      "metric": "Global Expansion",
+      "description": "High-performance AI-driven e-commerce platform scaled globally.",
+      "problem": "Reaching international distinct markets structurally limited by localization and region-specific login restrictions.",
+      "solution": "Built a global Flutter application supporting 8 languages natively, integrated complex regional authentication workflows including LINE (Japan) and WeChat (China), and implemented cutting-edge AI 'Search by Image' alongside AR Try-on modules.",
+      "impact": "Significantly improved user engagement metrics and effectively extended product reach across core distinct international markets.",
+      "tech": ["Flutter", "Dart", "LINE SDK", "WeChat SDK", "AR Core"]
+    },
+    {
+      "name": "Cascada (IoT Smart Waterer)",
+      "metric": "100% Reliability",
+      "description": "Stable IoT controller interface ensuring mission-critical health alerts.",
+      "problem": "Legacy codebase lacked stability, with deep-linking failures preventing timely intervention alerts.",
+      "solution": "Migrated legacy Flutter infrastructure to the latest framework versions and entirely replaced deprecated Firebase Dynamic Links with robust App Links.",
+      "impact": "Ensured 100% reliability for vital hardware health alerts, stabilizing the IoT management lifecycle.",
+      "tech": ["Flutter", "IoT", "App Links", "Firebase"]
+    },
+    {
+      "name": "Jewello (B2C FinTech Platform)",
+      "metric": "Multi-tenant Scaling",
+      "description": "Scalable financial technology backend supporting simultaneous B2C clients.",
+      "problem": "Standard backend architecture couldn't structurally isolate or securely handle overlapping B2B distinct transaction flows.",
+      "solution": "Designed a dynamic microservices backend via Spring Boot establishing a robust multi-tenant architecture to support 30+ distinct clients, integrating major payment gateways like Cashfree and BillDesk securely.",
+      "impact": "Delivered a highly secure, isolated, and scalable transaction system reliably addressing massive multi-client B2C load.",
+      "tech": ["Spring Boot", "Java", "Microservices", "Cashfree API"]
+    },
+    {
+      "name": "CI/CD Automation System",
+      "metric": "Deployment Efficiency",
+      "description": "Automated deployment pipeline eliminating manual staging workflows.",
+      "problem": "Manual compilation and varied regional deployments induced massive human-error vulnerability and downtime.",
+      "solution": "Constructed end-to-end automated pipelines utilizing GitLab CI/CD alongside Jenkins, handling complex selective app versioning and simultaneous deployment routines.",
+      "impact": "Reduced manual deployment effort significantly, virtually eliminating deployment-time errors across application rollout phases.",
+      "tech": ["GitLab CI/CD", "Jenkins", "Docker", "Kubernetes"]
+    },
+    {
+      "name": "POS Hardware Integration System",
+      "metric": "Real-time Settlement",
+      "description": "Native Android Point-of-Sale hardware integrated securely.",
+      "problem": "Seamless hardware interaction required zero-latency processing to prevent financial discrepancies during on-site checkout.",
+      "solution": "Engineered a low-level integration between the Android POS and immediate payment processing machines, strictly orchestrating synchronous real-time data flows.",
+      "impact": "Facilitated completely secure, instantaneous financial settlements, directly enhancing physical retail operational speed.",
+      "tech": ["Android SDK", "Java", "Hardware APIs"]
+    }
+  ];
+
   static const List<Map<String, dynamic>> experience = [
     {
       "company": "Mindbowser Inc",
       "role": "Software Engineer",
       "duration": "August 2025 – Present",
       "location": "Pune, India",
-      "projects": [
-        {
-          "name": "Kicksnap (Global AI-driven E-commerce)",
-          "points": [
-            "Engineered a multi-regional Flutter app localized for 8 languages across USA, Japan, and China.",
-            "Architected Line (Japan) and WeChat (China) social logins for East Asian market entry.",
-            "Implemented AI-driven Search by Image and AR Try-on features.",
-            "Integrated AppsFlyer and optimized deep linking flows for user acquisition."
-          ]
-        },
-        {
-          "name": "Cascada (IoT Smart Waterer)",
-          "points": [
-            "Led migration of legacy Flutter code resolving Play Store compatibility issues.",
-            "Migrated deprecated Firebase Dynamic Links to Native App Links."
-          ]
-        }
+      "points": [
+        "Architected highly scalable cross-platform solutions for massive international markets including the USA, Japan, and China.",
+        "Drove complex system-level integrations bypassing critical regional telecom blocks via strategic LINE and WeChat auth deployments.",
+        "Designed performant multi-lingual architectures and AI-driven capability integrations yielding substantial engagement improvements."
       ]
     },
     {
@@ -48,16 +83,10 @@ class AppConstants {
       "role": "Software Developer",
       "duration": "June 2022 – August 2025",
       "location": "Satara, India",
-      "projects": [
-        {
-          "name": "Jewello / Acme Padm",
-          "points": [
-            "Architected Core Microservices using Spring Boot & Clean Architecture Flutter frontend for a multi-tenant B2C ecosystem.",
-            "Designed a custom 'Flavor' architecture allowing 30+ clients to deploy branded apps from a single codebase.",
-            "Engineered high-performance RESTful APIs utilized by top-tier jewellery brands.",
-            "Integrated Fastlane CI/CD pipeline and Android POS hardware (Worldline & BonusHub) with card swipe machines."
-          ]
-        }
+      "points": [
+        "Constructed isolated Spring Boot microservice architectures empowering a single ecosystem to serve 30+ disparate enterprise clients effectively.",
+        "Optimized DevOps processes by delivering a resilient automated deployment structure utilizing advanced pipeline tools, significantly decreasing engineer overhead.",
+        "Delivered mission-critical native payment integrations ensuring 99.9% reconciliation accuracy across massive financial throughput."
       ]
     }
   ];
@@ -79,10 +108,12 @@ class AppConstants {
     {
       "title": "AWS Certified Developer – Associate",
       "year": "2026 – 2029",
+      "logoUrl": "https://images.credly.com/size/340x340/images/b9feab85-1a43-4f6c-99a5-6ea51d4d5259/image.png",
     },
     {
       "title": "Microservices with Spring Boot & Spring Cloud",
       "year": "Udemy Certified",
+      "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Udemy_logo.svg/512px-Udemy_logo.svg.png",
     },
     {
       "title": "Best Performer of the Year Award (ABP 2024)",
