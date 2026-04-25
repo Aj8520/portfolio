@@ -1,57 +1,100 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="Ajay Jadhav - Senior Software Engineer specializing in scalable backend systems (Spring Boot) and cross-platform mobile apps (Flutter). Exploring system architecture and global product expansion.">
-  <meta name="keywords" content="Ajay Jadhav, Software Engineer, Flutter Developer, Spring Boot Developer, System Architecture, Mobile Engineering, CI/CD">
-  
-  <!-- Open Graph Meta Tags -->
-  <meta property="og:title" content="Ajay Jadhav | Software Engineer">
-  <meta property="og:description" content="Discover my portfolio showcasing FAANG-level projects in Flutter, Spring Boot, DevOps, and scalable software architecture.">
-  <meta property="og:type" content="website">
-  
-  <!-- Twitter Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Ajay Jadhav | Software Engineer">
-  <meta name="twitter:description" content="Portfolio of Ajay Jadhav - Building scalable backend systems and high-performance Flutter mobile applications.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ajay Jadhav — Full-Stack Developer with 4 years building scalable Spring Boot microservices and 30+ live Flutter mobile apps. AWS Certified Developer.">
+  <meta name="keywords" content="Ajay Jadhav, Flutter Developer, Spring Boot, Full-Stack Developer, AWS, Mobile Engineer, Portfolio">
 
-  <!-- iOS meta tags & icons -->
+  <!-- Open Graph -->
+  <meta property="og:title" content="Ajay Jadhav | Full-Stack Developer">
+  <meta property="og:description" content="4 years building scalable backends & 30+ live mobile apps. Expert in Java / Spring Boot and Flutter.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="icons/Icon-512.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ajay Jadhav | Full-Stack Developer">
+  <meta name="twitter:description" content="Portfolio of Ajay Jadhav — Building scalable backend systems and high-performance Flutter mobile applications.">
+  <meta name="twitter:image" content="icons/Icon-512.png">
+
+  <!-- iOS -->
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Ajay Portfolio">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AJ Portfolio">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>Ajay Jadhav | Software Engineer</title>
+  <title>Ajay Jadhav | Full-Stack Developer</title>
   <link rel="manifest" href="manifest.json">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: #0D0D0D;
+    }
+
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      background: #0D0D0D;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      z-index: 9999;
+      transition: opacity 0.4s ease;
+    }
+
+    #loading-screen.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loader-logo {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #6C63FF, #00D4FF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .loader-bar {
+      width: 180px;
+      height: 2px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .loader-bar-fill {
+      height: 100%;
+      width: 40%;
+      background: linear-gradient(90deg, #6C63FF, #00D4FF);
+      border-radius: 2px;
+      animation: slide 1.2s ease-in-out infinite;
+    }
+
+    @keyframes slide {
+      0%   { transform: translateX(-100%); }
+      100% { transform: translateX(350%); }
+    }
+  </style>
 </head>
 <body>
-  <!--
-    You can customize the "flutter_bootstrap.js" script.
-    This is useful to provide a custom configuration to the Flutter loader
-    or to give the user feedback during the initialization process.
+  <div id="loading-screen">
+    <div class="loader-logo">&lt;AJ /&gt;</div>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+  </div>
 
-    For more details:
-    * https://docs.flutter.dev/platform-integration/web/initialization
-  -->
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
