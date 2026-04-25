@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:video_player/video_player.dart';
 import '../theme/app_colors.dart';
 import '../utils/constants.dart';
 import '../widgets/components.dart';
@@ -31,6 +32,7 @@ class _PortfolioHomeState extends State<PortfolioHome> {
   final _achievementsKey = GlobalKey();
   final _certificationsKey = GlobalKey();
   final _educationKey = GlobalKey();
+  final _guestLectureKey = GlobalKey();
   final _contactKey = GlobalKey();
 
   void _scrollTo(GlobalKey key) {
@@ -49,6 +51,7 @@ class _PortfolioHomeState extends State<PortfolioHome> {
       'Experience': _experienceKey,
       'Projects': _achievementsKey,
       'Skills': _skillsKey,
+      'Speaking': _guestLectureKey,
       'Certifications': _certificationsKey,
       'Contact': _contactKey,
     };
@@ -122,6 +125,12 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                         _CertificationsSection(key: _certificationsKey, isMobile: isMobile),
                         _sectionGap(),
                         _EducationSection(key: _educationKey, isDesktop: isDesktop),
+                        _sectionGap(),
+                        _GuestLectureSection(
+                          key: _guestLectureKey,
+                          isDesktop: isDesktop,
+                          isMobile: isMobile,
+                        ),
                         _sectionGap(),
                         _ContactSection(key: _contactKey, isDesktop: isDesktop),
                         const SizedBox(height: 80),
@@ -238,7 +247,7 @@ class _NavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const items = ['Home', 'Experience', 'Projects', 'Skills', 'Certifications', 'Contact'];
+    const items = ['Home', 'Experience', 'Projects', 'Skills', 'Speaking', 'Certifications', 'Contact'];
 
     return Container(
       height: 72,
@@ -386,7 +395,7 @@ class _MobileDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const items = ['Home', 'Experience', 'Projects', 'Skills', 'Certifications', 'Contact'];
+    const items = ['Home', 'Experience', 'Projects', 'Skills', 'Speaking', 'Certifications', 'Contact'];
     return Drawer(
       backgroundColor: AppColors.backgroundCard,
       child: SafeArea(
@@ -481,17 +490,21 @@ class _HeroContent extends StatelessWidget {
         const SizedBox(height: 12),
 
         // Name + blinking cursor
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.baseline,
-          textBaseline: TextBaseline.alphabetic,
-          children: [
-            Text(
-              AppConstants.name,
-              style: Theme.of(context).textTheme.displayLarge,
-            ).animate().fadeIn(delay: 200.ms, duration: 600.ms),
-            const SizedBox(width: 4),
-            const _BlinkingCursor(),
-          ],
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          alignment: Alignment.centerLeft,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            children: [
+              Text(
+                AppConstants.name,
+                style: Theme.of(context).textTheme.displayLarge,
+              ).animate().fadeIn(delay: 200.ms, duration: 600.ms),
+              const SizedBox(width: 4),
+              const _BlinkingCursor(),
+            ],
+          ),
         ),
         const SizedBox(height: 16),
 
@@ -855,32 +868,38 @@ class _SkillsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Entrance(
-          id: 'skills-title',
-          child: SectionTitle(title: 'Tech Stack', tag: '// technologies'),
-        ),
-        Wrap(
-          spacing: 24,
-          runSpacing: 24,
-          children: AppConstants.skills.asMap().entries.map((entry) {
-            final i = entry.key;
-            final cat = entry.value;
-            final color = _catColors[cat['colorKey']] ?? AppColors.primary;
-            return Entrance(
-              id: 'skill-cat-$i',
-              delay: Duration(milliseconds: i * 80),
-              child: _SkillCategory(
-                category: cat['category'] as String,
-                items: List<String>.from(cat['items'] as List),
-                color: color,
-              ),
-            );
-          }).toList(),
-        ),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final cardWidth = constraints.maxWidth < 600 ? constraints.maxWidth : 340.0;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Entrance(
+              id: 'skills-title',
+              child: SectionTitle(title: 'Tech Stack', tag: '// technologies'),
+            ),
+            Wrap(
+              spacing: 24,
+              runSpacing: 24,
+              children: AppConstants.skills.asMap().entries.map((entry) {
+                final i = entry.key;
+                final cat = entry.value;
+                final color = _catColors[cat['colorKey']] ?? AppColors.primary;
+                return Entrance(
+                  id: 'skill-cat-$i',
+                  delay: Duration(milliseconds: i * 80),
+                  child: _SkillCategory(
+                    category: cat['category'] as String,
+                    items: List<String>.from(cat['items'] as List),
+                    color: color,
+                    width: cardWidth,
+                  ),
+                );
+              }).toList(),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -889,13 +908,14 @@ class _SkillCategory extends StatelessWidget {
   final String category;
   final List<String> items;
   final Color color;
+  final double width;
 
-  const _SkillCategory({required this.category, required this.items, required this.color});
+  const _SkillCategory({required this.category, required this.items, required this.color, this.width = 340});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 340,
+      width: width,
       child: GlassCard(
         borderColor: color.withValues(alpha: 0.2),
         child: Column(
@@ -1296,30 +1316,35 @@ class _CertificationsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Entrance(
-          id: 'cert-title',
-          child: SectionTitle(title: 'Certifications', tag: '// credentials'),
-        ),
-        Wrap(
-          spacing: 24,
-          runSpacing: 24,
-          children: AppConstants.certifications.asMap().entries.map((e) {
-            final i = e.key;
-            final cert = e.value;
-            return Entrance(
-              id: 'cert-$i',
-              delay: Duration(milliseconds: i * 100),
-              child: SizedBox(
-                width: isMobile ? double.infinity : 340,
-                child: _CertCard(cert: cert),
-              ),
-            );
-          }).toList(),
-        ),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final cardWidth = isMobile ? constraints.maxWidth : 340.0;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Entrance(
+              id: 'cert-title',
+              child: SectionTitle(title: 'Certifications', tag: '// credentials'),
+            ),
+            Wrap(
+              spacing: 24,
+              runSpacing: 24,
+              children: AppConstants.certifications.asMap().entries.map((e) {
+                final i = e.key;
+                final cert = e.value;
+                return Entrance(
+                  id: 'cert-$i',
+                  delay: Duration(milliseconds: i * 100),
+                  child: SizedBox(
+                    width: cardWidth,
+                    child: _CertCard(cert: cert),
+                  ),
+                );
+              }).toList(),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -1352,7 +1377,22 @@ class _CertCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     child: Image.network(
                       cert['logoUrl'] as String,
+                      width: 48,
+                      height: 48,
                       fit: BoxFit.contain,
+                      loadingBuilder: (_, child, progress) {
+                        if (progress == null) return child;
+                        return Center(
+                          child: SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: iconColor,
+                            ),
+                          ),
+                        );
+                      },
                       errorBuilder: (_, __, ___) => Center(
                         child: FaIcon(
                           isAward ? FontAwesomeIcons.trophy : FontAwesomeIcons.certificate,
@@ -1669,6 +1709,528 @@ class _ContactForm extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// GUEST LECTURES
+// ═══════════════════════════════════════════════════════════════════════════════
+
+class _GuestLectureSection extends StatelessWidget {
+  final bool isDesktop;
+  final bool isMobile;
+
+  const _GuestLectureSection({super.key, required this.isDesktop, required this.isMobile});
+
+  @override
+  Widget build(BuildContext context) {
+    const lectures = AppConstants.guestLectures;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Entrance(
+          id: 'speaking-title',
+          child: SectionTitle(title: 'Speaking & Mentorship', tag: '// guest_lectures'),
+        ),
+        Entrance(
+          id: 'speaking-subtitle',
+          child: Text(
+            'Invited to share industry insights with the next generation of developers at Yashwantrao Chavan Institute of Science (YCIS), Satara.',
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+        ),
+        const SizedBox(height: 40),
+        if (isDesktop)
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Entrance(
+                  id: 'lecture-card-0',
+                  child: _LectureVideoCard(lecture: lectures[0], isMobile: false),
+                ),
+              ),
+              const SizedBox(width: 24),
+              Expanded(
+                child: Entrance(
+                  id: 'lecture-card-1',
+                  delay: const Duration(milliseconds: 150),
+                  child: _LectureVideoCard(lecture: lectures[1], isMobile: false),
+                ),
+              ),
+            ],
+          )
+        else
+          Column(
+            children: [
+              Entrance(
+                id: 'lecture-card-0',
+                child: _LectureVideoCard(lecture: lectures[0], isMobile: isMobile),
+              ),
+              const SizedBox(height: 24),
+              Entrance(
+                id: 'lecture-card-1',
+                delay: const Duration(milliseconds: 150),
+                child: _LectureVideoCard(lecture: lectures[1], isMobile: isMobile),
+              ),
+            ],
+          ),
+      ],
+    );
+  }
+}
+
+class _LectureVideoCard extends StatefulWidget {
+  final Map<String, String> lecture;
+  final bool isMobile;
+
+  const _LectureVideoCard({required this.lecture, required this.isMobile});
+
+  @override
+  State<_LectureVideoCard> createState() => _LectureVideoCardState();
+}
+
+class _LectureVideoCardState extends State<_LectureVideoCard> {
+  VideoPlayerController? _ctrl;
+  bool _initialized = false;
+  bool _dialogOpen = false;
+  bool _hovered = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initVideo();
+  }
+
+  Future<void> _initVideo() async {
+    final path = widget.lecture['videoAsset'] ?? '';
+    if (path.isEmpty) return;
+    try {
+      final ctrl = VideoPlayerController.asset(path);
+      await ctrl.initialize();
+      if (!mounted) {
+        ctrl.dispose();
+        return;
+      }
+      await ctrl.setLooping(true);
+      await ctrl.setVolume(0);
+      await ctrl.play();
+      setState(() {
+        _ctrl = ctrl;
+        _initialized = true;
+      });
+    } catch (_) {
+      // Video unavailable — gradient placeholder renders instead
+    }
+  }
+
+  @override
+  void dispose() {
+    _ctrl?.dispose();
+    super.dispose();
+  }
+
+  void _openPlayer(BuildContext context) {
+    _ctrl?.pause();
+    _ctrl?.setVolume(1.0);
+    setState(() => _dialogOpen = true);
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withValues(alpha: 0.9),
+      builder: (_) => _VideoDialog(
+        controller: _ctrl!,
+        title: widget.lecture['topic']!,
+      ),
+    ).then((_) {
+      if (!mounted) return;
+      _ctrl?.setVolume(0);
+      _ctrl?.play();
+      setState(() => _dialogOpen = false);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final cardHeight = widget.isMobile ? 300.0 : 440.0;
+
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        height: cardHeight,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: _hovered
+                ? AppColors.primary.withValues(alpha: 0.5)
+                : AppColors.border,
+            width: _hovered ? 1.5 : 1,
+          ),
+          boxShadow: _hovered
+              ? [
+                  BoxShadow(
+                    color: AppColors.primary.withValues(alpha: 0.18),
+                    blurRadius: 40,
+                    spreadRadius: -8,
+                  ),
+                ]
+              : null,
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              // ── Background: video or gradient placeholder ──
+              if (_initialized && _ctrl != null && !_dialogOpen)
+                FittedBox(
+                  fit: BoxFit.cover,
+                  child: SizedBox(
+                    width: _ctrl!.value.size.width,
+                    height: _ctrl!.value.size.height,
+                    child: VideoPlayer(_ctrl!),
+                  ),
+                )
+              else
+                Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Color(0xFF1A1A2E), Color(0xFF16213E), Color(0xFF0F3460)],
+                    ),
+                  ),
+                  child: Center(
+                    child: FaIcon(
+                      FontAwesomeIcons.chalkboardUser,
+                      color: AppColors.primary.withValues(alpha: 0.18),
+                      size: 90,
+                    ),
+                  ),
+                ),
+
+              // ── Gradient overlay (always shown) ──
+              Positioned.fill(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      stops: const [0.0, 0.35, 1.0],
+                      colors: [
+                        Colors.black.withValues(alpha: _initialized ? 0.15 : 0.0),
+                        Colors.black.withValues(alpha: 0.25),
+                        Colors.black.withValues(alpha: 0.94),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              // ── Top-left badge ──
+              Positioned(
+                top: 20,
+                left: 20,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withValues(alpha: 0.88),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const FaIcon(FontAwesomeIcons.chalkboardUser,
+                          color: Colors.white, size: 11),
+                      const SizedBox(width: 6),
+                      Text(
+                        widget.lecture['number']!,
+                        style: GoogleFonts.dmMono(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // ── Muted indicator (top-right, only when video playing) ──
+              if (_initialized && !_dialogOpen)
+                Positioned(
+                  top: 20,
+                  right: 20,
+                  child: Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.45),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.volume_off_rounded,
+                        color: Colors.white60, size: 14),
+                  ),
+                ),
+
+              // ── Bottom content ──
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(Icons.location_on_rounded,
+                              color: AppColors.accent, size: 13),
+                          const SizedBox(width: 4),
+                          Text(
+                            widget.lecture['institute']!,
+                            style: GoogleFonts.dmMono(
+                                color: AppColors.accent, fontSize: 12),
+                          ),
+                          const Spacer(),
+                          Text(
+                            widget.lecture['date']!,
+                            style: GoogleFonts.dmMono(
+                                color: Colors.white54, fontSize: 11),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        widget.lecture['topic']!,
+                        style: GoogleFonts.spaceGrotesk(
+                          color: Colors.white,
+                          fontSize: widget.isMobile ? 16 : 19,
+                          fontWeight: FontWeight.w700,
+                          height: 1.25,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        widget.lecture['department']!,
+                        style: GoogleFonts.inter(
+                            color: Colors.white54, fontSize: 13),
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              widget.lecture['tags']!,
+                              style: GoogleFonts.dmMono(
+                                color: AppColors.primary
+                                    .withValues(alpha: 0.85),
+                                fontSize: 11,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          if (_initialized) ...[
+                            const SizedBox(width: 12),
+                            GestureDetector(
+                              onTap: () => _openPlayer(context),
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 180),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: _hovered
+                                      ? Colors.white.withValues(alpha: 0.22)
+                                      : Colors.white.withValues(alpha: 0.12),
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(color: Colors.white30),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(Icons.play_arrow_rounded,
+                                        color: Colors.white, size: 16),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      'Watch',
+                                      style: GoogleFonts.spaceGrotesk(
+                                        color: Colors.white,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _VideoDialog extends StatefulWidget {
+  final VideoPlayerController controller;
+  final String title;
+
+  const _VideoDialog({required this.controller, required this.title});
+
+  @override
+  State<_VideoDialog> createState() => _VideoDialogState();
+}
+
+class _VideoDialogState extends State<_VideoDialog> {
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(_update);
+  }
+
+  void _update() {
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_update);
+    super.dispose();
+  }
+
+  String _fmt(Duration d) {
+    final m = d.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final s = d.inSeconds.remainder(60).toString().padLeft(2, '0');
+    return '$m:$s';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ctrl = widget.controller;
+    final isPlaying = ctrl.value.isPlaying;
+    final position = ctrl.value.position;
+    final duration = ctrl.value.duration;
+    final muted = ctrl.value.volume == 0;
+
+    final screenH = MediaQuery.of(context).size.height;
+    return Dialog(
+      backgroundColor: const Color(0xFF0E0E0E),
+      insetPadding: const EdgeInsets.all(20),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: screenH * 0.85),
+        child: Column(
+          children: [
+            // Title bar
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 16, 8, 12),
+              child: Row(
+                children: [
+                  Container(
+                    width: 8,
+                    height: 8,
+                    decoration: const BoxDecoration(
+                        color: AppColors.primary, shape: BoxShape.circle),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      widget.title,
+                      style: GoogleFonts.spaceGrotesk(
+                        color: AppColors.textMain,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close_rounded, color: Colors.white60),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+            ),
+
+            // Video — Expanded so it fills remaining height, AspectRatio letterboxes inside
+            Expanded(
+              child: AspectRatio(
+                aspectRatio: ctrl.value.isInitialized
+                    ? ctrl.value.aspectRatio
+                    : 16 / 9,
+                child: ctrl.value.isInitialized
+                    ? VideoPlayer(ctrl)
+                    : const Center(
+                        child: CircularProgressIndicator(
+                            color: AppColors.primary)),
+              ),
+            ),
+
+            // Progress bar
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+              child: VideoProgressIndicator(
+                ctrl,
+                allowScrubbing: true,
+                colors: const VideoProgressColors(
+                  playedColor: AppColors.primary,
+                  bufferedColor: Color(0x44FFFFFF),
+                  backgroundColor: Color(0x22FFFFFF),
+                ),
+              ),
+            ),
+
+            // Controls row
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 4, 8, 12),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                      color: Colors.white,
+                      size: 26,
+                    ),
+                    onPressed: () =>
+                        isPlaying ? ctrl.pause() : ctrl.play(),
+                  ),
+                  Text(
+                    '${_fmt(position)} / ${_fmt(duration)}',
+                    style: GoogleFonts.dmMono(
+                        color: Colors.white54, fontSize: 12),
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    icon: Icon(
+                      muted
+                          ? Icons.volume_off_rounded
+                          : Icons.volume_up_rounded,
+                      color: Colors.white60,
+                      size: 22,
+                    ),
+                    onPressed: () =>
+                        ctrl.setVolume(muted ? 1.0 : 0.0),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -85,7 +85,7 @@ class SectionTitle extends StatelessWidget {
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              Text(title, style: Theme.of(context).textTheme.displaySmall),
+              Flexible(child: Text(title, style: Theme.of(context).textTheme.displaySmall)),
             ],
           ),
         ],

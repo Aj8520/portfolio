@@ -162,8 +162,8 @@ class AppConstants {
       "issuer": "Amazon Web Services",
       "year": "Valid: 2026 – 2029",
       "type": "cert",
-      "logoUrl": "https://images.credly.com/size/340x340/images/b9feab85-1a43-4f6c-99a5-6ea51d4d5259/image.png",
-      "verifyUrl": "",
+      "logoUrl": "https://images.credly.com/size/680x680/images/b9feab85-1a43-4f6c-99a5-631b88d5461b/image.png",
+      "verifyUrl": "https://www.credly.com/badges/3409036e-4f85-4697-94c0-fd5e48d3ad08/linked_in?t=tbdkpj",
     },
     {
       "title": "Microservices with Spring Boot & Spring Cloud",
@@ -171,7 +171,7 @@ class AppConstants {
       "year": "Udemy Certified",
       "type": "cert",
       "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Udemy_logo.svg/512px-Udemy_logo.svg.png",
-      "verifyUrl": "",
+      "verifyUrl": "https://udemy-certificate.s3.amazonaws.com/pdf/UC-2fbbb9d8-940f-48fd-ab0e-8c0a81017c9b.pdf",
     },
     {
       "title": "Best Performer of the Year 2024",
@@ -179,7 +179,34 @@ class AppConstants {
       "year": "2024",
       "type": "award",
       "logoUrl": null,
-      "verifyUrl": "",
+      "verifyUrl": "https://www.linkedin.com/posts/ajayaniljadhav_achievementunlocked-recognition-bestperformer2024-activity-7279900870438244353-wvJA?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAECKbSsBrCqiqcwjLQvx-y_Y_I52DTmjfLA",
+    },
+  ];
+
+  static const List<Map<String, String>> guestLectures = [
+    {
+      "videoAsset": "assets/IMG_8657.MOV",
+      "number": "Guest Lecture",
+      "date": "2024",
+      "institute": "YCIS, Satara",
+      "department": "Department of Computer Science",
+      "topic": "Recent Trends in Computer Science",
+      "subtitle": "Career Counselling & Career Guidance",
+      "description":
+          "Honored to deliver a Guest Lecture at Yashwantrao Chavan Institute of Science (YCIS), Satara. Interacted with students, sharing real-world industry insights and discussing how to align their skills, interests, and career goals in today's fast-evolving tech landscape.",
+      "tags": "Career Guidance · Student Mentorship · Computer Science",
+    },
+    {
+      "videoAsset": "assets/IMG_8657.MOV",
+      "number": "3rd Guest Lecture",
+      "date": "Sept 20, 2025",
+      "institute": "YCIS, Satara",
+      "department": "Department of Software Development",
+      "topic": "Flutter: Building Apps for Mobile, Web, and Desktop",
+      "subtitle": "Mobile · Web · Desktop",
+      "description":
+          "Had the privilege to deliver my 3rd Guest Lecture at Yashavantrao Chavan Institute of Science, Satara. Students actively engaged during a session on building production-grade Flutter applications across all platforms.",
+      "tags": "Flutter · Mobile Dev · Web Dev · Desktop Apps",
     },
   ];
 
