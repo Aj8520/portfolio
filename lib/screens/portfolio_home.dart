@@ -148,13 +148,15 @@ class _PortfolioHomeState extends State<PortfolioHome> {
             top: 0,
             left: 0,
             right: 0,
-            child: ClipRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                child: _NavBar(
-                  isDesktop: isDesktop,
-                  onNavigate: _navigateTo,
-                  onMenuTap: () => _scaffoldKey.currentState?.openDrawer(),
+            child: Builder(
+              builder: (ctx) => ClipRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                  child: _NavBar(
+                    isDesktop: isDesktop,
+                    onNavigate: _navigateTo,
+                    onMenuTap: () => Scaffold.of(ctx).openDrawer(),
+                  ),
                 ),
               ),
             ),
@@ -1919,11 +1921,11 @@ class _LectureVideoCardState extends State<_LectureVideoCard> {
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      stops: const [0.0, 0.35, 1.0],
+                      stops: const [0.0, 0.4, 1.0],
                       colors: [
-                        Colors.black.withValues(alpha: _initialized ? 0.15 : 0.0),
-                        Colors.black.withValues(alpha: 0.25),
-                        Colors.black.withValues(alpha: 0.94),
+                        Colors.black.withValues(alpha: 0.42),
+                        Colors.black.withValues(alpha: 0.58),
+                        Colors.black.withValues(alpha: 0.96),
                       ],
                     ),
                   ),
@@ -2037,40 +2039,63 @@ class _LectureVideoCardState extends State<_LectureVideoCard> {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          if (_initialized) ...[
-                            const SizedBox(width: 12),
-                            GestureDetector(
-                              onTap: () => _openPlayer(context),
-                              child: AnimatedContainer(
-                                duration: const Duration(milliseconds: 180),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 8),
-                                decoration: BoxDecoration(
-                                  color: _hovered
-                                      ? Colors.white.withValues(alpha: 0.22)
-                                      : Colors.white.withValues(alpha: 0.12),
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(color: Colors.white30),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Icon(Icons.play_arrow_rounded,
-                                        color: Colors.white, size: 16),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      'Watch',
-                                      style: GoogleFonts.spaceGrotesk(
-                                        color: Colors.white,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                          const SizedBox(width: 12),
+                          GestureDetector(
+                            onTap: () {
+                              if (_initialized && _ctrl != null) {
+                                _openPlayer(context);
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Video plays on Safari (iOS/macOS). Convert to .mp4 for Chrome support.',
+                                      style: GoogleFonts.dmMono(fontSize: 13),
                                     ),
-                                  ],
-                                ),
+                                    backgroundColor: const Color(0xFF1E1E2E),
+                                    behavior: SnackBarBehavior.floating,
+                                    duration: const Duration(seconds: 4),
+                                  ),
+                                );
+                              }
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 180),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: _hovered
+                                    ? Colors.white.withValues(alpha: 0.22)
+                                    : Colors.white.withValues(alpha: 0.12),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Colors.white30),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    _initialized
+                                        ? Icons.play_arrow_rounded
+                                        : Icons.play_disabled_rounded,
+                                    color: _initialized
+                                        ? Colors.white
+                                        : Colors.white54,
+                                    size: 16,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'Watch',
+                                    style: GoogleFonts.spaceGrotesk(
+                                      color: _initialized
+                                          ? Colors.white
+                                          : Colors.white54,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
+                          ),
                         ],
                       ),
                     ],
